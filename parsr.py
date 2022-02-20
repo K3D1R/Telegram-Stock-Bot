@@ -27,7 +27,7 @@ def update_ticker():
 
     convert = soup.find('span',{'class':"chart__info__sum"})
 
-    price = float(convert.text[1:])
+    price = float(convert.text[1:].strip().replace(',','.'))
 
     print(f'Цена акции SBERP:{price}')
 

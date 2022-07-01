@@ -11,20 +11,21 @@ from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 
+#Подключение базы данных
 import sqlite3
 db = sqlite3.Connection('stock.db')
 cur = db.cursor()
 
+#Машины состояний
 class tickker(StatesGroup):
     tickr_cost = State()
-#bot's token
 class favorri(StatesGroup):
     favor_add = State()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-# Initialize bot and dispatcher
+# Инициализация бота
 bot = Bot(token=bot_token)
 dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(LoggingMiddleware())
@@ -57,7 +58,7 @@ favourite_kb.add(button_add_fav,button_look_fav,back_button)
 #текст ошибки
 error_text = "Ошибка! Неверная ссылка/Сервер не отвечает"
 
-
+#Функции
 def conn_check(url):
     """Проверяет подключение"""
     headers = {
@@ -207,7 +208,8 @@ async def check_conn(message:types.Message):
 @dp.message_handler(commands=['⭐Избранное'])
 async def favor(message:types.Message):
     await message.reply("Выберите операцию", reply_markup=favourite_kb)
-
+#Избранное
+#Добавление в избранное
 @dp.message_handler(commands=['+Добавить_в_избранное'], state = None)
 async def add_fav_url_part_1(message:types.Message):
     await message.answer("Введите URL С сайта РБК")
@@ -215,6 +217,7 @@ async def add_fav_url_part_1(message:types.Message):
 
 @dp.message_handler(state=favorri.favor_add)
 async def add_fav_url_part_2(message:types.Message, state= FSMContext):
+#Получение id пользователя и url
     url = message.text
     id = message.from_user.id
     def get_urls():
@@ -234,7 +237,8 @@ async def add_fav_url_part_2(message:types.Message, state= FSMContext):
             return "⚠️Неправильная ссылка⚠️"
     await message.reply(get_urls())
     await state.finish()
-
+    
+#Просмотр цен избранных активов
 @dp.message_handler(commands = ['Посмотреть_Избранное'])
 async def look_fav(message:types.Message):
     cur.execute("SELECT stock_url FROM users_data")

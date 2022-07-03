@@ -11,7 +11,7 @@ Bot can get price of tickers from rbc.ru. You need just get the url(I understood
 Upd: favourite function is available to users. (But it's dangerous)
 
 RU:
-Это мой собственный телеграмм бот, который помогает мне узнавать цену акций. UPD:Сейчас реализован почти весь запланированный функционал.
+Это мой собственный телеграм бот, который помогает мне узнавать цену акций. UPD:Сейчас реализован почти весь запланированный функционал.
 Он использует библиотеки:
 
 -aiogram;
